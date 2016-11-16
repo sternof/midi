@@ -11,10 +11,10 @@ import {HttpService} from '../services/http.service';
   
   <button (click)="onTestGet()"> Get Request </button>
   <br>
-  <p> output get : {{getData}} </p>
+  <p> output get : {{jsonData}} </p>
   <br>
   <button (click)="onTestPost()"> Post Request </button>
-  <p> output post: {{postData}} </p>
+  <p> output post: {{jsonPostData}} </p>
   <br>
   <h2> TEXT </h2>
   <button (click)="getText()"> Post Request </button>
