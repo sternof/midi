@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import {Http, Headers} from '@angular/http';
+//import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
-
+import {HttpService} from '../services/http.service';
 @Component({
   selector: 'httpserver',
   styleUrls: ['./app.component.css'],
@@ -15,54 +15,51 @@ import { Observable } from 'rxjs/Observable';
   <br>
   <button (click)="onTestPost()"> Post Request </button>
   <p> output post: {{postData}} </p>
-
+  <br>
+  <h2> TEXT </h2>
+  <button (click)="getText()"> Post Request </button>
+  <p> output post: {{textData}} </p>
   `
 })
 
 export class HttpServer {
 
-constructor(private http : Http) {}
+constructor(private httpService : HttpService) {
+
+}
+
 
   title: string = 'Http Server';
  
-  getData: string ;
-  postData: string ;
+  jsonData: string ;
+  jsonPostData: string ;
+  textData: string ;
 
-  private getJsonCurTime() {
- // var url = '../model/data.json';
-  var url = 'http://echo.jsontest.com/key/value/one/two';
-  var url = 'http://date.jsontest.com/';
-  var urltext ='../model/data.txt'; 
-  //return this.http.get(url).map(res  => res.json());
-  return this.http.get(urltext).map(res  => res.text());
-  }
 
-  private postJson() {
-    var json = JSON.stringify({var1: 'test',
-  var2: 3, var3 : 'bla'});
-  var params = 'json=' + json;
-  var headers = new Headers();
-  headers.append('Content-Type',
-  'application/x-www-form-urlencoded' );
-  return this.http.post('http://validate.jsontest.com', params, {
-    headers: headers
-  }).map (res=> res.json());
-
-  }
 
  private onTestGet() {
-   this.getJsonCurTime().subscribe(
+   this.httpService.getJson().subscribe(
      data => 
-       this.getData = JSON.stringify(data),
+       this.jsonData = JSON.stringify(data),
      error => alert (error),
      () => console.log("finished")
    );
  }
 
- private onTestPost() {
-   this.postJson().subscribe(
+
+ private getText() {
+   this.httpService.getText().subscribe(
      data => 
-       this.postData = JSON.stringify(data),
+       this.textData = data,
+     error => alert (error),
+     () => console.log("finished text")
+   );
+ }
+
+ private onTestPost() {
+   this.httpService.postJson().subscribe(
+     data => 
+       this.jsonPostData = JSON.stringify(data),
      error => alert (error),
      () => console.log("finished posting")
    );
