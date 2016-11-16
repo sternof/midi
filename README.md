@@ -1,8 +1,4 @@
-## Pipes!
-
-A simple starter project for building our pipes library
-
-This branch uses [Webpack](https://webpack.github.io/) for Development.
+## Http Server!
 
 ### How to set up:
 - Clone or fork this repository
@@ -12,6 +8,6 @@ This branch uses [Webpack](https://webpack.github.io/) for Development.
 - run `npm install` to install dependencies
 - `WINDOWS ONLY` run `npm run typings-install` to install typings
 - run `npm start` to fire up dev server
-- open browser to [`http://localhost:3000`](http://localhost:3000)
+- open browser to [`http://localhost:3001`](http://localhost:3001)
 
 Based on the official angular 2 seed project
