@@ -12,11 +12,19 @@ constructor (private http : Http ) {
 }
 
   public getJson() {
- // var url = '../model/data.json';
-  var url = 'http://echo.jsontest.com/key/value/one/two';
+  //var url = '../model/data.json';
+ // var url = 'http://echo.jsontest.com/key/value/one/two';
   var url = 'http://date.jsontest.com/';
   return this.http.get(url).map(res  => res.json());
   }
+
+  public getJsonLocal() {
+  var url = '../model/data.json';
+ // var url = 'http://echo.jsontest.com/key/value/one/two';
+ // var url = 'http://date.jsontest.com/';
+  return this.http.get(url).map(res  => res.json());
+  }
+  
 
   public getText() {
   var urltext ='../model/data.txt'; 

@@ -13,6 +13,9 @@ import {HttpService} from '../services/http.service';
   <br>
   <p> output get : {{jsonData}} </p>
   <br>
+  <div *ngFor= "let item of itemArray">  {{item.title}} </div>
+  <br>
+
   <button (click)="onTestPost()"> Post Request </button>
   <p> output post: {{jsonPostData}} </p>
   <br>
@@ -30,7 +33,7 @@ constructor(private httpService : HttpService) {
 
 
   title: string = 'Http Server';
- 
+  itemArray = [];
   jsonData: string ;
   jsonPostData: string ;
   textData: string ;
@@ -41,6 +44,13 @@ constructor(private httpService : HttpService) {
    this.httpService.getJson().subscribe(
      data => 
        this.jsonData = JSON.stringify(data),
+     error => alert (error),
+     () => console.log("finished")
+   );
+   ///// getting array from local file. 
+   this.httpService.getJsonLocal().subscribe(
+     data => 
+       this.itemArray = data,
      error => alert (error),
      () => console.log("finished")
    );
