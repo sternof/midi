@@ -8,6 +8,7 @@ import {LocationStrategy, HashLocationStrategy} from "@angular/common";
 import { HttpServer } from './components/app.component';
 
 import { HttpService} from './services/http.service';
+import { StringService} from './services/strings.service';
 
 
 
@@ -37,7 +38,7 @@ import { HttpService} from './services/http.service';
       provide : LocationStrategy,
       useClass: HashLocationStrategy
     }, 
-    HttpService
+    HttpService,StringService
 ],
   bootstrap: [HttpServer],
 })
