@@ -86,7 +86,7 @@ constructor(private httpService : HttpService, private strings : StringService) 
  private getText() {
    this.httpService.getText().subscribe(
      data => {
-       this.textData = data;
+       this.textData = this.modifyString(data);
      },
      error => alert (error),
      () => console.log("finished text")
@@ -101,7 +101,7 @@ constructor(private httpService : HttpService, private strings : StringService) 
    this.httpService.postJson(url).subscribe(
      data =>  {
        this.jsonPostData = JSON.stringify(data);
-       console.log(data);
+       console.log('on test post:' ,data);
        this.jsonPostDataArray.push(JSON.stringify(data));
 
      },
@@ -116,18 +116,23 @@ constructor(private httpService : HttpService, private strings : StringService) 
    );*/
  }
 
- private getStrings() {
-   let string = "what is this thing. anyway is this ok";
+ private getStrings(string: string) : string {
+  // let string = "what is this thing. anyway is this ok";
    this.httpService.getText().subscribe(
      data => {
-       string = data;
-       let obj = this.strings.ArrayStringToObject(this.strings.stringToArray(string));
-        obj = this.strings.changeObjectProperties(obj);
-        let modifiedString = this.strings.reconstructStringFromObj(obj);
-        console.log(modifiedString);
+       return this.modifyString(data);
      },
      error => alert (error),
      () => console.log("finished text")
    );
+   return 'loading';
+ }
+
+ private modifyString(string : string) : string {
+        let obj = this.strings.ArrayStringToObject(this.strings.stringToArray(string));
+        obj = this.strings.changeObjectProperties(obj);
+        let modifiedString = this.strings.reconstructStringFromObj(obj);
+        console.log(modifiedString);
+        return modifiedString;
  }
 }

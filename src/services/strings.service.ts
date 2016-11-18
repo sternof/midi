@@ -32,7 +32,7 @@ export class StringService {
          return stringObj;
      }
 
-    public reconstructStringFromObj(stringObj) : String {
+    public reconstructStringFromObj(stringObj) : string {
     let stringArray=[];
     let keys = Object.keys(stringObj);
     keys.forEach(key => {
