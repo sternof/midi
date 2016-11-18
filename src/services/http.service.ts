@@ -11,20 +11,20 @@ export class HttpService {
 constructor (private http : Http ) {
 }
 
-  public getJson() {
-  //var url = '../model/data.json';
- // var url = 'http://echo.jsontest.com/key/value/one/two';
-  var url = 'http://date.jsontest.com/';
+  public getJson(url : string) {
+
   return this.http.get(url).map(res  => res.json());
   }
 
-  public getJsonLocal() {
-  var url = '../model/data.json';
+  public getJsonLocal( url: string) {
  // var url = 'http://echo.jsontest.com/key/value/one/two';
  // var url = 'http://date.jsontest.com/';
   return this.http.get(url).map(res  => res.json());
   }
   
+  public getHttpRequest(url : string) {
+    return this.http.request(url).map(res=>res.json());
+  }
 
   public getText() {
   var urltext ='../model/data.txt'; 
@@ -32,17 +32,24 @@ constructor (private http : Http ) {
   }
 
 
-  public postJson() {
-    var json = JSON.stringify({var1: 'test',
-  var2: 3, var3 : 'bla'});
-  var params = 'json=' + json;
+  public postJson(url : string) {
+    var json = JSON.stringify( {id : 1 ,body: 'test',
+  title : 'bla',userId: 1 });
+  var params = 'data=' + json;
+ // var params = 'just a string';
   var headers = new Headers();
-  headers.append('Content-Type',
-  'application/x-www-form-urlencoded' );
-  return this.http.post('http://validate.jsontest.com', params, {
+  return this.http.post(url,json).map(res=>res.json());
+ /* this.createHeaders(headers);
+  return this.http.post(url, params, {
     headers: headers
-  }).map (res=> res.json());
+  }).map (res=> res.json());*/
+  }
 
+  private createHeaders(headers: Headers) {
+    headers.append('Content-Type',
+    'text/html' );
+  //      headers.append('Content-Type',
+   // 'application/x-www-form-urlencoded' );
   }
 
 

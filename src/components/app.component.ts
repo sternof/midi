@@ -11,12 +11,12 @@ import {StringService} from '../services/strings.service';
   template: `
       <h1>{{ title }}</h1>  
   
-  <button (click)="onTestGet()"> Get Request </button>
+  <button (click)="onTestGet()"> Get  </button>
   <p> output get : {{jsonData}} </p>
-  <div *ngFor= "let item of itemArray">  {{item.title}} </div>
-  <button (click)="onTestPost()"> Post Request </button>
+  <div *ngFor= "let item of itemArray"> id: {{item.id}} <br> title: {{item.title}} </div>
+  <button (click)="onTestPost()"> Post  </button>
   <p> output post: {{jsonPostData}} </p>
-    <div *ngFor= "let item of jsonPostDataArray">  {{item}} </div>
+    <!--div *ngFor= "let item of jsonPostDataArray">  {{item}} </div-->
 
   <br>
   <h2> TEXT </h2>
@@ -27,6 +27,13 @@ import {StringService} from '../services/strings.service';
 
   `
 })
+/*
+class Item {
+  title : string;
+  userId: number;
+  body: string;
+  id: number;
+}*/
 
 export class HttpServer {
 
@@ -38,23 +45,38 @@ constructor(private httpService : HttpService, private strings : StringService) 
   title: string = 'Http Server';
   itemArray = [];
   jsonData: string ;
-  jsonPostData: string ;
+  jsonPostData ;
   jsonPostDataArray =[];
   textData: string ;
 
 
 
  private onTestGet() {
-   this.httpService.getJson().subscribe(
+  //var url = '../model/data.json';
+ // var url = 'http://echo.jsontest.com/key/value/one/two';
+  var url = 'http://date.jsontest.com/';
+  var urlLocal = '../model/data.json';
+  url = 'http://httpbin.org/get';
+
+   this.httpService.getJson(url).subscribe(
      data => 
        this.jsonData = JSON.stringify(data),
      error => alert (error),
      () => console.log("finished")
    );
    ///// getting array from local file. 
-   this.httpService.getJsonLocal().subscribe(
+  /* this.httpService.getJsonLocal(urlLocal).subscribe(
      data => 
        this.itemArray = data,
+     error => alert (error),
+     () => console.log("finished")
+   );*/
+   url = 'http://jsonplaceholder.typicode.com/posts';
+   this.httpService.getHttpRequest(url).subscribe(
+     data => {
+  //   console.log(data);
+       this.itemArray = data;
+      },
      error => alert (error),
      () => console.log("finished")
    );
@@ -72,28 +94,40 @@ constructor(private httpService : HttpService, private strings : StringService) 
  }
 
  private onTestPost() {
-   this.httpService.postJson().subscribe(
+   let url  = 'http://validate.jsontest.com'
+     url = 'http://httpbin.org/post';
+   url = 'http://jsonplaceholder.typicode.com/posts';
+
+   this.httpService.postJson(url).subscribe(
      data =>  {
        this.jsonPostData = JSON.stringify(data);
+       console.log(data);
        this.jsonPostDataArray.push(JSON.stringify(data));
 
      },
      error => alert (error),
      () => console.log("finished posting")
-   );
-      this.httpService.postJson().subscribe(
+   );/*
+      this.httpService.postJson(url).subscribe(
      data => 
        this.jsonPostDataArray.push(JSON.stringify(data)),
      error => alert (error),
      () => console.log("finished posting 2")
-   );
+   );*/
  }
 
  private getStrings() {
-   let string = "what is this thing?";
-   console.log(this.strings.stringToArray(string));
-   console.log(this.strings.stringReverseWordOrder(string));
-   console.log(this.strings.stringReverseInPlace(string));
-   
+   let string = "what is this thing. anyway is this ok";
+   this.httpService.getText().subscribe(
+     data => {
+       string = data;
+       let obj = this.strings.ArrayStringToObject(this.strings.stringToArray(string));
+        obj = this.strings.changeObjectProperties(obj);
+        let modifiedString = this.strings.reconstructStringFromObj(obj);
+        console.log(modifiedString);
+     },
+     error => alert (error),
+     () => console.log("finished text")
+   );
  }
 }
