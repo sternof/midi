@@ -1,4 +1,7 @@
-## Http Server!
+## Midi app!
+
+logic is in: 
+src/components/app.component.ts  
 
 ### How to set up:
 - Clone or fork this repository
@@ -8,6 +11,5 @@
 - run `npm install` to install dependencies
 - `WINDOWS ONLY` run `npm run typings-install` to install typings
 - run `npm start` to fire up dev server
-- open browser to [`http://localhost:3001`](http://localhost:3001)
+- open browser to [`http://localhost:3000`](http://localhost:3000)
 
-Based on the official angular 2 seed project

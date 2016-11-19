@@ -5,10 +5,7 @@ import { HttpModule, JsonpModule } from '@angular/http';
 import { RouterModule }   from '@angular/router';
 import {LocationStrategy, HashLocationStrategy} from "@angular/common";
 
-import { HttpServer } from './components/app.component';
-
-import { HttpService} from './services/http.service';
-import { StringService} from './services/strings.service';
+import { Midi } from './components/app.component';
 
 
 
@@ -31,16 +28,15 @@ import { StringService} from './services/strings.service';
       { path: '**', component: HomeComponent }
     ])*/
     ],
-  declarations: [HttpServer
+  declarations: [Midi
   ],
   providers: [ 
     {
       provide : LocationStrategy,
       useClass: HashLocationStrategy
     }, 
-    HttpService,StringService
 ],
-  bootstrap: [HttpServer],
+  bootstrap: [Midi],
 })
 
 export class AppModule {}

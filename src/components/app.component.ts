@@ -1,138 +1,45 @@
-import { Component } from '@angular/core';
-import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Observable';
-import {HttpService} from '../services/http.service';
-import {StringService} from '../services/strings.service';
-
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'httpserver',
-  styleUrls: ['./app.component.css'],
+  selector: 'midi-app',
+ styles: ['.key {height: 80px;}'],
   template: `
       <h1>{{ title }}</h1>  
-  
-  <button (click)="onTestGet()"> Get  </button>
-  <p> output get : {{jsonData}} </p>
-  <div *ngFor= "let item of itemArray"> id: {{item.id}} <br> title: {{item.title}} </div>
-  <button (click)="onTestPost()"> Post  </button>
-  <p> output post: {{jsonPostData}} </p>
-    <!--div *ngFor= "let item of jsonPostDataArray">  {{item}} </div-->
-
-  <br>
-  <h2> TEXT </h2>
-  <button (click)="getText()"> Post Request </button>
-  <pre> output text: {{textData}} </pre>
-  <h2> STRINGS </h2>
-  <button (click)="getStrings()"> Strings </button>
-
+  <div> 
+  <span *ngFor="let key of keys"> <button class='key' [style.background-color]='getColor(key.id)' (click)="play(key.frequency)"> </button>  </span> 
+  </div>
   `
 })
-/*
-class Item {
-  title : string;
-  userId: number;
-  body: string;
-  id: number;
-}*/
 
-export class HttpServer {
+export class Midi implements OnInit {
+title: string = 'piano';
+keys = [];
 
-constructor(private httpService : HttpService, private strings : StringService) {
+public ngOnInit() {
+  for (let i=0 ; i<20;i++) {
+    this.keys.push({id: i,frequency: 440 * (1+ i* Math.sqrt(2)/12)})
+  }
 
+}
+public getColor(id : number) : string {
+  if (id%12==1 || id%12==3 || id%12==6 ||id%12==8 ||id%12==10){
+  return 'black';
+  }
+  return 'white';
+}
+
+public play(frequency : number) {
+var context = new AudioContext;
+var oscillator = context.createOscillator();
+oscillator.frequency.value = frequency;
+
+oscillator.connect(context.destination);
+
+oscillator.start(0); 
+setTimeout(function() {
+  oscillator.stop();
+}, 100);
 }
 
 
-  title: string = 'Http Server';
-  itemArray = [];
-  jsonData: string ;
-  jsonPostData ;
-  jsonPostDataArray =[];
-  textData: string ;
-
-
-
- private onTestGet() {
-  //var url = '../model/data.json';
- // var url = 'http://echo.jsontest.com/key/value/one/two';
-  var url = 'http://date.jsontest.com/';
-  var urlLocal = '../model/data.json';
-  url = 'http://httpbin.org/get';
-
-   this.httpService.getJson(url).subscribe(
-     data => 
-       this.jsonData = JSON.stringify(data),
-     error => alert (error),
-     () => console.log("finished")
-   );
-   ///// getting array from local file. 
-  /* this.httpService.getJsonLocal(urlLocal).subscribe(
-     data => 
-       this.itemArray = data,
-     error => alert (error),
-     () => console.log("finished")
-   );*/
-   url = 'http://jsonplaceholder.typicode.com/posts';
-   this.httpService.getHttpRequest(url).subscribe(
-     data => {
-  //   console.log(data);
-       this.itemArray = data;
-      },
-     error => alert (error),
-     () => console.log("finished")
-   );
- }
-
-
- private getText() {
-   this.httpService.getText().subscribe(
-     data => {
-       this.textData = this.modifyString(data);
-     },
-     error => alert (error),
-     () => console.log("finished text")
-   );
- }
-
- private onTestPost() {
-   let url  = 'http://validate.jsontest.com'
-     url = 'http://httpbin.org/post';
-   url = 'http://jsonplaceholder.typicode.com/posts';
-
-   this.httpService.postJson(url).subscribe(
-     data =>  {
-       this.jsonPostData = JSON.stringify(data);
-       console.log('on test post:' ,data);
-       this.jsonPostDataArray.push(JSON.stringify(data));
-
-     },
-     error => alert (error),
-     () => console.log("finished posting")
-   );/*
-      this.httpService.postJson(url).subscribe(
-     data => 
-       this.jsonPostDataArray.push(JSON.stringify(data)),
-     error => alert (error),
-     () => console.log("finished posting 2")
-   );*/
- }
-
- private getStrings(string: string) : string {
-  // let string = "what is this thing. anyway is this ok";
-   this.httpService.getText().subscribe(
-     data => {
-       return this.modifyString(data);
-     },
-     error => alert (error),
-     () => console.log("finished text")
-   );
-   return 'loading';
- }
-
- private modifyString(string : string) : string {
-        let obj = this.strings.ArrayStringToObject(this.strings.stringToArray(string));
-        obj = this.strings.changeObjectProperties(obj);
-        let modifiedString = this.strings.reconstructStringFromObj(obj);
-        console.log(modifiedString);
-        return modifiedString;
- }
 }
