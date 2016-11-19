@@ -17,7 +17,7 @@ keys = [];
 
 public ngOnInit() {
   for (let i=0 ; i<20;i++) {
-    this.keys.push({id: i,frequency: 256 * (1+ i* Math.sqrt(2)/12)})
+    this.keys.push({id: i,frequency: 256 * Math.pow(2,(i/12))});
   }
 
 }
