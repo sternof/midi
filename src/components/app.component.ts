@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'midi-app',
- styles: ['.key {height: 80px;}'],
+ styles: ['.key {height: 40px;}'],
   template: `
       <h1>{{ title }}</h1>  
   <div> 
